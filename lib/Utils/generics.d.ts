@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import { AxiosRequestConfig } from 'axios';
 import { Logger } from 'pino';
 import { proto } from '../../WAProto';
 import { BaileysEventEmitter, BaileysEventMap, WACallUpdateType, WAVersion } from '../Types';
@@ -39,10 +40,31 @@ export declare const generateMessageID: () => string;
 export declare function bindWaitForEvent<T extends keyof BaileysEventMap>(ev: BaileysEventEmitter, event: T): (check: (u: BaileysEventMap[T]) => boolean | undefined, timeoutMs?: number) => Promise<void>;
 export declare const bindWaitForConnectionUpdate: (ev: BaileysEventEmitter) => (check: (u: Partial<import("../Types").ConnectionState>) => boolean | undefined, timeoutMs?: number) => Promise<void>;
 export declare const printQRIfNecessaryListener: (ev: BaileysEventEmitter, logger: Logger) => void;
-/** Returns the current baileys version from baileys-version.json */
-export declare const fetchLatestBaileysVersion: (options?: any) => Promise<{
+/**
+ * utility that fetches latest baileys version from the master branch.
+ * Use to ensure your WA connection is always on the latest version
+ */
+export declare const fetchLatestBaileysVersion: (options?: AxiosRequestConfig<any>) => Promise<{
     version: WAVersion;
     isLatest: boolean;
+    error?: undefined;
+} | {
+    version: WAVersion;
+    isLatest: boolean;
+    error: any;
+}>;
+/**
+ * A utility that fetches the latest web version of whatsapp.
+ * Use to ensure your WA connection is always on the latest version
+ */
+export declare const fetchLatestWaWebVersion: (options: AxiosRequestConfig<any>) => Promise<{
+    version: WAVersion;
+    isLatest: boolean;
+    error?: undefined;
+} | {
+    version: WAVersion;
+    isLatest: boolean;
+    error: any;
 }>;
 /** unique message tag prefix for MD clients */
 export declare const generateMdTagPrefix: () => string;
